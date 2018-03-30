@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="ProyectoBD2Subastas">
+        <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <property name="context-root" value="ProyectoBD2Subastas"/>
+        <property name="java-output-path" value="/ProyectoBD2Subastas/build/classes"/>
+    </wb-module>
+</project-modules>
