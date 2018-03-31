@@ -6174,3 +6174,8 @@ html, body {
     height: 100%;
     content: ' ';
     background: linear-gradient(white, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0)); }
+    
+ td 
+ {
+    padding:0 30px 0 30px;
+}
