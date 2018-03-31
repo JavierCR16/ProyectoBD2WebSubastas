@@ -21,13 +21,13 @@ import Gestores.GestorBD;
  * Servlet implementation class ServeletParticipante
  */
 @WebServlet("/ServeletParticipante")
-public class ServeletParticipante extends HttpServlet {
+public class ServletParticipante extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ServeletParticipante() {
+    public ServletParticipante() {
         super();
         // TODO Auto-generated constructor stub
     }

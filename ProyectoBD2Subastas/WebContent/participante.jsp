@@ -65,7 +65,7 @@
                 <br> </a>
             </li>
           </ul>
-          <form action="ServeletParticipante" method = GET>
+          <form action="ServletParticipante" method = GET>
           <div class="tab-content mt-2">
             <div class="tab-pane fade show active" id="tabone" role="tabpanel">
               <h1 class="text-center">Subastar un ͍tem</h1>
@@ -121,7 +121,7 @@
                                 <td> <input name="precio" type = "text" style = "border-radius: 10px " >  </td>
                                 <td> <select> 
                                 	<% for(int i =0;i<categorias.size(); i++){  %>
-                                        	<option value="<%=categorias.get(i) %>">categorias.get(i)</option>
+                                        	<option value="<%=categorias.get(i) %>"><%=categorias.get(i)%></option>
                                         	
                                         	<%} %>
                                         

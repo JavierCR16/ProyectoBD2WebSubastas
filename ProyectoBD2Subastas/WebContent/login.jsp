@@ -34,7 +34,7 @@ mensajeDevuelto = (mensajeDevuelto == null? "" : mensajeDevuelto);
               
               <label><%= mensajeDevuelto%></label>
               
-              <form action="ServeletLogin" method = GET>
+              <form action="ServletLogin" method = GET>
                 <div class="form-group"> <label>Alias</label>
                   <input name = "cuadroAlias" type="text" class="form-control" placeholder="Ingrese su alias"> </div>
                 <div class="form-group"> <label>Password</label>

@@ -19,13 +19,13 @@ import javax.servlet.*;
  * Servlet implementation class ServletLogin
  */
 @WebServlet("/ServletLogin")
-public class ServeletLogin extends HttpServlet {
+public class ServletLogin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ServeletLogin() {
+    public ServletLogin() {
         super();
         // TODO Auto-generated constructor stub
     }
