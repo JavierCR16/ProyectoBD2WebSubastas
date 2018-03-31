@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+    
+<%@ page import= "Gestores.GestorBD" %>    
+<%@ page import= "java.util.*" %> 
 <!DOCTYPE html>
 <html>
 
@@ -18,7 +21,18 @@
                 });
             });
   </script>
-
+	
+	
+	
+	<%
+	
+	HttpSession laSesion = request.getSession();
+	
+	GestorBD gestorParticipante = (GestorBD)laSesion.getAttribute("gestorParticipante");
+	ArrayList<String> categorias = gestorParticipante.getCategorias();
+	
+	%>
+	 
 
 <body>
   <nav class="navbar navbar-expand-md bg-primary navbar-dark bg-gradient">
@@ -103,9 +117,13 @@
                             </tr>
                                 
                             <tr>
+
                                 <td> <input name="precio" type = "text" style = "border-radius: 10px " >  </td>
-                                <td> <select name="categoria"> 
-                                        <--> Se debe hacer una consulta de chava para las categorias</-->
+                                <td> <select> 
+                                	<% for(int i =0;i<categorias.size(); i++){  %>
+                                        	<option value="<%=categorias.get(i) %>">categorias.get(i)</option>
+                                        	
+                                        	<%} %>
                                         
                                     </select> </td>
                             </tr>
