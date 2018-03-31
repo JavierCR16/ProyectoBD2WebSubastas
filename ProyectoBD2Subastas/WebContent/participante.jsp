@@ -51,20 +51,21 @@
                 <br> </a>
             </li>
           </ul>
+          <form action="ServeletParticipante" method = GET>
           <div class="tab-content mt-2">
             <div class="tab-pane fade show active" id="tabone" role="tabpanel">
-              <h1 class="text-center">Subastar un Ítem</h1>
+              <h1 class="text-center">Subastar un ͍tem</h1>
               <form class="form-control">
                 <div class="custom-control-inline">
                   <div class="input-group"> <label style = "margin-top: 10px">Inicio de Subasta:</label>
-                    <input class="form-control" style="margin-left:5%; width:22%" type="date">
-                    <input type="time" class="form-control" style="margin-left:2%"> </div>
+                    <input class="form-control" style="margin-left:5%; width:22%" type="date" name="fechaInicioSubasta">
+                    <input type="time" class="form-control" style="margin-left:2%" name="horaInicioSubasta"> </div>
                     
             
                   <div class="input-group">
                       <label style="margin-left: 5%; margin-top:10px;">Fin de Subasta:</label>
-                    <input style="margin-left:5%; width:22%" type="date" class="form-control">
-                    <input style="margin-left: 2%" type="time" class="form-control"> 
+                    <input style="margin-left:5%; width:22%" type="date" class="form-control" name="fechaFinSubasta">
+                    <input style="margin-left: 2%" type="time" class="form-control" name="horaFinSubasta"> 
                     </div>
                 </div>
                   
@@ -77,7 +78,7 @@
                             </tr>
                                 
                             <tr>
-                                <td> <textarea class="form-control" rows="4" cols="50" name="comment" form="usrform"> </textarea> </td>
+                                <td> <textarea class="form-control" rows="4" cols="50" name="descripcion" form="usrform"> </textarea> </td>
                                 
                             </tr>
                             
@@ -92,7 +93,7 @@
                             </tr>
                                 
                             <tr>
-                                <td> <textarea class="form-control" rows="4" cols="50" name="comment" form="usrform"> </textarea> </td>
+                                <td> <textarea class="form-control" rows="4" cols="50" name="detalles" form="usrform"> </textarea> </td>
                                 <td><input name="fileChooser" id="fileChooser" type="file"/></td>
                             </tr>
                             
@@ -102,8 +103,8 @@
                             </tr>
                                 
                             <tr>
-                                <td> <input type = "text" style = "border-radius: 10px " >  </td>
-                                <td> <select> 
+                                <td> <input name="precio" type = "text" style = "border-radius: 10px " >  </td>
+                                <td> <select name="categoria"> 
                                         <--> Se debe hacer una consulta de chava para las categorias</-->
                                         
                                     </select> </td>
@@ -118,7 +119,7 @@
                                 <td></td>
                                 
                                 
-                                <td><select> 
+                                <td><select name="subcategoria"> 
                                         <--> Se debe hacer una consulta de chava para las subcategorias</-->
                                         
                                     </select> </td>
@@ -151,6 +152,7 @@
               <p class="">Contenido de Usuarios</p>
             </div>
           </div>
+          </form>
         </div>
       </div>
     </div>

@@ -58,6 +58,8 @@ public class ServletLogin extends HttpServlet {
         
         if(gestorBase.existeConexionUsuarios(aliasUsuario, contraUsuario) && gestorBase.existeEntidad(aliasUsuario, "PARTICIPANTE")) {
         	gestorBase.establecerConexionUsuario(aliasUsuario, contraUsuario);
+        	sesionActual.setAttribute("gestorParticipante", gestorBase);
+        	sesionActual.setAttribute("aliasParticipante", aliasUsuario);
         	response.sendRedirect("participante.jsp");
         }
         else {
