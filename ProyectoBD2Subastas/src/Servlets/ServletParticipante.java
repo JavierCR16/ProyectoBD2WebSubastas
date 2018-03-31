@@ -18,9 +18,9 @@ import java.util.*;
 import Gestores.GestorBD;
 
 /**
- * Servlet implementation class ServeletParticipante
+ * Servlet implementation class ServletParticipante
  */
-@WebServlet("/ServeletParticipante")
+@WebServlet("/ServletParticipante")
 public class ServletParticipante extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -52,7 +52,7 @@ public class ServletParticipante extends HttpServlet {
 	
 	private void insertarSubasta(HttpServletRequest request) {
 		HttpSession sesionActual = request.getSession();
-		GestorBD gestorParticipante = (GestorBD) request.getAttribute("gestorParticipante");
+		GestorBD gestorParticipante = (GestorBD) sesionActual.getAttribute("gestorParticipante");
 		String aliasParticipante = (String) request.getAttribute("aliasParticipante");
 		
 		DateFormat formatoFechas = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH);
@@ -72,6 +72,9 @@ public class ServletParticipante extends HttpServlet {
 			
 			int idSubCategoria = 1; //Se debe cambiar por el metodo para obtener el id de categoria
 			
+			if(gestorParticipante == null) {
+				System.out.println("Gestor en nulo");
+			} else {
 			gestorParticipante.crearSubasta(
                     aliasParticipante,
                     new java.sql.Date(dateInicio.getTime()),
@@ -82,6 +85,7 @@ public class ServletParticipante extends HttpServlet {
                     detalles,
                     idSubCategoria
             );
+			}
 		} catch(ParseException e){
 			e.printStackTrace();
 		}
