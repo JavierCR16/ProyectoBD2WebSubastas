@@ -65,7 +65,7 @@
                 <br> </a>
             </li>
           </ul>
-          <form action="ServletParticipante" method = GET>
+          <form action="ServletParticipante" method = POST>
           <div class="tab-content mt-2">
             <div class="tab-pane fade show active" id="tabone" role="tabpanel">
               <h1 class="text-center">Subastar un ͍tem</h1>
@@ -92,7 +92,7 @@
                             </tr>
                                 
                             <tr>
-                                <td> <textarea class="form-control" rows="4" cols="50" name="descripcion" form="usrform"> </textarea> </td>
+                                <td> <textarea class="form-control" rows="4" cols="50" name="descripcion" > </textarea> </td>
                                 
                             </tr>
                             
@@ -107,7 +107,7 @@
                             </tr>
                                 
                             <tr>
-                                <td> <textarea class="form-control" rows="4" cols="50" name="detalles" form="usrform"> </textarea> </td>
+                                <td> <textarea class="form-control" rows="4" cols="50" name="detalles" > </textarea> </td>
                                 <td><input name="fileChooser" id="fileChooser" type="file"/></td>
                             </tr>
                             

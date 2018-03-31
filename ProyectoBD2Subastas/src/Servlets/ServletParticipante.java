@@ -38,8 +38,8 @@ public class ServletParticipante extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		insertarSubasta(request);
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
-		//response.getWriter().append("Served at: ").append(request.getParameter("fechaInicioSubasta"));
+		response.sendRedirect("participante.jsp");
+		
 	}
 
 	/**
@@ -53,7 +53,7 @@ public class ServletParticipante extends HttpServlet {
 	private void insertarSubasta(HttpServletRequest request) {
 		HttpSession sesionActual = request.getSession();
 		GestorBD gestorParticipante = (GestorBD) sesionActual.getAttribute("gestorParticipante");
-		String aliasParticipante = (String) request.getAttribute("aliasParticipante");
+		String aliasParticipante = (String) sesionActual.getAttribute("aliasParticipante");
 		
 		DateFormat formatoFechas = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH);
 		try {
@@ -70,11 +70,9 @@ public class ServletParticipante extends HttpServlet {
 			String imagen = request.getParameter("fileChooser");
 			BigDecimal precioBase = new BigDecimal(request.getParameter("precio"));
 			
-			int idSubCategoria = 1; //Se debe cambiar por el metodo para obtener el id de categoria
+			int idSubCategoria = 8000; //Se debe cambiar por el metodo para obtener el id de categoria
 			
-			if(gestorParticipante == null) {
-				System.out.println("Gestor en nulo");
-			} else {
+			
 			gestorParticipante.crearSubasta(
                     aliasParticipante,
                     new java.sql.Date(dateInicio.getTime()),
@@ -85,7 +83,8 @@ public class ServletParticipante extends HttpServlet {
                     detalles,
                     idSubCategoria
             );
-			}
+			
+			
 		} catch(ParseException e){
 			e.printStackTrace();
 		}

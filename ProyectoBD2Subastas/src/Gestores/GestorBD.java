@@ -319,7 +319,7 @@ public class GestorBD {
 
         String subastaSQL = "{call C##PRINCIPALSCHEMA.crearSubasta(?,?,?,?,?,?,?,?)}"; //INSERT INTO ITEM(DESCRIPCION,FOTO,PRECIO_BASE,DETALLESENTREGA,IDSUBCATEGORIA) VALUES(?,?,?,?,?);
         try {
-            FileInputStream imagen = new FileInputStream("C:\\Users\\User\\IDE_Projects\\EclipseProjects\\ProyectoBD2WebSubastas\\ProyectoBD2Subastas\\src\\Imagenes\\" + nombreImagen);
+            FileInputStream imagen = new FileInputStream("C:\\Users\\Javier\\git\\ProyectoBD2WebSubastas\\ProyectoBD2Subastas\\src\\Imagenes\\" + nombreImagen);//C:\\Users\\User\\IDE_Projects\\EclipseProjects\\ProyectoBD2WebSubastas\\ProyectoBD2Subastas\\src\\Imagenes\\
 
             CallableStatement nuevaSubasta = conexion.prepareCall(subastaSQL);
 
