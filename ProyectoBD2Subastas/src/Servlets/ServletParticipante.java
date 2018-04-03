@@ -48,6 +48,10 @@ public class ServletParticipante extends HttpServlet {
 			setNullParametrosViejos(request); // Para que cuando se borre la subasta no queden sus valores viejos.
 			entroAOtro = true;
 		}
+		if(request.getParameter("botonPujar") !=null) {
+			insertarPuja(request);
+			entroAOtro = true;
+		}
 		if(request.getParameter("botonActualizarSubastas") !=null) {
 			entroAOtro = true;
 		}
@@ -252,5 +256,24 @@ public class ServletParticipante extends HttpServlet {
 		ArrayList<Subasta> subastasValidasTotales = gestorParticipante.getSubastas(new java.sql.Date(gestorParticipante.obtenerFecha().getTime()), aliasParticipante);
 		sesionActual.setAttribute("subastasValidas", subastasValidasTotales);
 		
+	}
+	
+	private void insertarPuja(HttpServletRequest request) {
+		HttpSession sesionActual = request.getSession();
+		GestorBD gestorParticipante = (GestorBD) sesionActual.getAttribute("gestorParticipante");
+		String aliasParticipante = (String) sesionActual.getAttribute("aliasParticipante");
+		
+		int idSubasta = Integer.parseInt(request.getParameter("idSubastaComprador"));
+		int idItem = gestorParticipante.buscarIdItem(idSubasta);
+		
+		BigDecimal montoOferta = new BigDecimal(request.getParameter("montoOferta"));
+		
+		Date fechaPuja = gestorParticipante.obtenerFecha();
+		
+		if(fechaPuja.before(gestorParticipante.obtenerTiempoFin(idSubasta))) {
+			gestorParticipante.pujarPuja(aliasParticipante, idItem, montoOferta, new java.sql.Date(fechaPuja.getTime()));
+		}else {
+			System.out.println("Puja no insertada por fin de tiempo.");
+		}
 	}
 }

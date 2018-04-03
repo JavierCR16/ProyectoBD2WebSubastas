@@ -251,13 +251,13 @@
                                 <div class="row">
                                   <div class="col-md-12 d-flex">
                                     <h3 class="m-2">₡</h3>
-                                    <input name="precio" type="text" style="border-radius: 10px" value="<%=precioBase%>" class="m-2"> </div>
+                                    <input name="montoOferta" type="text" style="border-radius: 10px" value="<%=precioBase%>" class="m-2"> </div>
                                 </div>
                                 
                                 <div class="row">
                                   <div class="col-md-12 d-flex">
                                     <h3 class="m-2">ID:</h3>
-                                    <input name="precio" type="text" style="border-radius: 10px" value="<%=precioBase%>" class="m-2"> </div>
+                                    <input name="idSubastaComprador" type="text" style="border-radius: 10px" value="<%=precioBase%>" class="m-2"> </div>
                                 </div>
                                 
                                 <div class="row d-flex justify-content-start">

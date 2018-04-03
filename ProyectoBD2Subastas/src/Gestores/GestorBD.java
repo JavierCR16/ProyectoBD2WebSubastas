@@ -319,8 +319,9 @@ public class GestorBD {
 
         String subastaSQL = "{call C##PRINCIPALSCHEMA.crearSubasta(?,?,?,?,?,?,?,?)}"; //INSERT INTO ITEM(DESCRIPCION,FOTO,PRECIO_BASE,DETALLESENTREGA,IDSUBCATEGORIA) VALUES(?,?,?,?,?);
         try {
-            FileInputStream imagen = new FileInputStream("C:\\Users\\Javier\\git\\ProyectoBD2WebSubastas\\ProyectoBD2Subastas\\src\\Imagenes\\" + nombreImagen);//C:\\Users\\User\\IDE_Projects\\EclipseProjects\\ProyectoBD2WebSubastas\\ProyectoBD2Subastas\\src\\Imagenes\\
-
+            //FileInputStream imagen = new FileInputStream("C:\\Users\\Javier\\git\\ProyectoBD2WebSubastas\\ProyectoBD2Subastas\\src\\Imagenes\\" + nombreImagen);//
+            FileInputStream imagen = new FileInputStream("C:\\Users\\User\\IDE_Projects\\EclipseProjects\\ProyectoBD2WebSubastas\\ProyectoBD2Subastas\\src\\Imagenes\\" + nombreImagen);
+            
             CallableStatement nuevaSubasta = conexion.prepareCall(subastaSQL);
 
 
@@ -461,7 +462,8 @@ public class GestorBD {
 
            pujar.close();
        }catch(SQLException e){
-           invocarAlerta("El monto ingresado debe ser mayor.");
+           //invocarAlerta("El monto ingresado debe ser mayor.");
+    	   System.out.println("El monto ingresado debe ser mayor.");
            e.printStackTrace();
        }
     }
