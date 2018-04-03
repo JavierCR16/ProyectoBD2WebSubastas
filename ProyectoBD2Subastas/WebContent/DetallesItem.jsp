@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ page import= "Gestores.GestorBD" %>    
 <%@ page import= "java.util.*" %> 
 <%@ page import = "Modelo.*" %>
@@ -15,22 +15,16 @@
   
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script type="text/javascript" src="Javascript/imagen.js"></script>
-  <script>
-    $(document).ready(function () {
-                $("#fileChooser").change(function () {
-                    mostrarImagen(event);
-                });
-            });
-  </script>
 
   <%
-	//Aqui los datos de un item
+  	HttpSession sesionActual = request.getSession();
+	Item itemInformacion = (Item)sesionActual.getAttribute("item");
 	%>
   
 <body>
   <nav class="navbar navbar-expand-md bg-primary navbar-dark bg-gradient">
     <div class="container">
-      <a class="navbar-brand" href="#">Sistema de Subastas
+      <a class="navbar-brand" href="#">Detalles del Ítem
         <br> </a>
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar2SupportedContent" aria-controls="navbar2SupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
       <div class="collapse navbar-collapse text-center justify-content-end" id="navbar2SupportedContent"> </div>
@@ -48,7 +42,7 @@
         <div class="col-md-6">
           <div class="row">
             <div class="col-md-12">
-              <p class="lead">ID del Objeto:</p>
+              <p class="lead">ID del Ítem: <%= itemInformacion.getId() %></p>
             </div>
           </div>
           <div class="row">
@@ -58,7 +52,7 @@
           </div>
           <div class="row">
             <div class="col-md-12">
-              <p class="">[DESCRIPCION DEL ITEM]</p>
+              <p class=""><%= itemInformacion.getDescripcion()%> </p>
             </div>
           </div>
           <div class="row">
@@ -68,7 +62,7 @@
           </div>
           <div class="row">
             <div class="col-md-12">
-              <p class="">[DETALLES DE ENTREGA]</p>
+              <p class=""><%= itemInformacion.getDetallesEntrega() %> </p>
             </div>
           </div>
         </div>
@@ -80,22 +74,28 @@
           </div>
           <div class="row">
             <div class="col-md-12">
-              <div id="divImagen"></div>
+            
+              <div id="divImagen">
+              
+              	<img src="C:/Users/Javier/git/ProyectoBD2WebSubastas/ProyectoBD2Subastas/src/Imagenes/<%=itemInformacion.getNombreImagen()%>">
+              
+              </div>
+              
             </div>
           </div>
           <div class="row">
             <div class="col-md-12">
-              <p class="lead">Precio Base:</p>
+              <p class="lead">Precio Base: <%= itemInformacion.getPrecioBase()%></p>
             </div>
           </div>
           <div class="row">
             <div class="col-md-12">
-              <p class="lead">Inicio:</p>
+              <p class="lead">Inicio: <%= itemInformacion.getInicioSubasta() %></p>
             </div>
           </div>
           <div class="row">
             <div class="col-md-12">
-              <p class="lead">Fin:</p>
+              <p class="lead">Fin: <%= itemInformacion.getFinSubasta() %></p>
             </div>
           </div>
           <div class="row d-flex justify-content-end">

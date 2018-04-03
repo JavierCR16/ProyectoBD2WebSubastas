@@ -18,6 +18,7 @@ import java.util.*;
 import Gestores.GestorBD;
 import Modelo.Comentario;
 import Modelo.ConsultasHistorial;
+import Modelo.Item;
 import Modelo.Puja;
 import Modelo.Subasta;
 
@@ -42,6 +43,7 @@ public class ServletParticipante extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		boolean entroAOtro = false;
+		boolean otraVentana = false;
 		
 		if(request.getParameter("botonSubasta") != null) {
 			insertarSubasta(request);
@@ -63,6 +65,15 @@ public class ServletParticipante extends HttpServlet {
 		
 		if(request.getParameter("botonActualizarUsuarios") != null) {
 			entroAOtro = true;
+		}
+		
+		if(request.getParameter("botonMostrarDetallesComprador") != null) {
+			entroAOtro = true;
+			otraVentana = true;
+			
+			pasarInfoItem(request);
+			response.sendRedirect("DetallesItem.jsp");
+			
 		}
 		
 		if(request.getParameter("botonHistorialUsuarios") != null) {
@@ -99,8 +110,8 @@ public class ServletParticipante extends HttpServlet {
 	
 		}
 		
-			response.sendRedirect("participante.jsp");
-		
+			if(!otraVentana)
+				response.sendRedirect("participante.jsp");
 	}
 
 	/**
@@ -275,5 +286,15 @@ public class ServletParticipante extends HttpServlet {
 		}else {
 			System.out.println("Puja no insertada por fin de tiempo.");
 		}
+	}
+	
+	private void pasarInfoItem(HttpServletRequest request) {
+		HttpSession sesionActual = request.getSession();
+		GestorBD gestorParticipante = (GestorBD) sesionActual.getAttribute("gestorParticipante");
+		
+		String idSubasta = request.getParameter("idSubastaComprador");
+		Item informacionItem = gestorParticipante.extraerInformacionItem(idSubasta);
+		
+		sesionActual.setAttribute("item", informacionItem);
 	}
 }
