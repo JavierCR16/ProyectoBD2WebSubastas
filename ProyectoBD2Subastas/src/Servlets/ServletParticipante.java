@@ -16,7 +16,10 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import Gestores.GestorBD;
+import Modelo.Comentario;
+import Modelo.ConsultasHistorial;
 import Modelo.Puja;
+import Modelo.Subasta;
 
 /**
  * Servlet implementation class ServletParticipante
@@ -54,10 +57,41 @@ public class ServletParticipante extends HttpServlet {
 			obtenerPujas(request);
 		}
 		
-		if(!entroAOtro && request.getParameter("comboCategorias") != null) {
-			enviarParametrosASesion(request); //Esto para que cuando agarre las subcategorias se queden los campos que tenian algo escrito
+		if(request.getParameter("botonActualizarUsuarios") != null) {
+			entroAOtro = true;
+		}
+		
+		if(request.getParameter("botonHistorialUsuarios") != null) {
+			entroAOtro = true;
+			String valorRadio = request.getParameter("radioBoton");
+			String usuarioSeleccionado = request.getParameter("usuariosConsulta");
 			
-			obtenerSubCategorias(request);
+			if(valorRadio.equals("1"))
+				obtenerMultiplesArreglos(request,"Vendedor",usuarioSeleccionado);
+			else
+				obtenerMultiplesArreglos(request,"Comprador",usuarioSeleccionado);
+		}
+		
+		if(request.getParameter("botonSinFiltroComprador") != null) {
+			entroAOtro = true;
+			obtenerSubastasValidas(request);
+		}
+		
+		
+		if(request.getParameter("botonFiltrarComprador")!= null) {
+			entroAOtro = true;
+			obtenerSubastasFiltradas(request);
+		}
+		
+		if(!entroAOtro && request.getParameter("comboCategorias") != null) {
+			if(!request.getParameter("comboCategorias").equals("Categoria")) { // Significa que el que se toco fue el de los filtros
+				enviarParametrosASesion(request); //Esto para que cuando agarre las subcategorias se queden los campos que tenian algo escrito
+			
+				obtenerSubCategorias(request);
+			}
+			else {
+				obtenerSubCategoriasFiltro(request);
+			}
 	
 		}
 		
@@ -142,6 +176,14 @@ public class ServletParticipante extends HttpServlet {
 		sesionActual.setAttribute("subCatego", gestorParticipante.filtrarSubCategorias(idCategoria));
 	}
 
+	private void obtenerSubCategoriasFiltro(HttpServletRequest request) {
+		HttpSession sesionActual = request.getSession();
+		GestorBD gestorParticipante = (GestorBD) sesionActual.getAttribute("gestorParticipante");
+		int idCategoria = Integer.parseInt(request.getParameter("comboCategoriasFiltro").substring(0,request.getParameter("comboCategoriasFiltro").indexOf("-")));
+		
+		sesionActual.setAttribute("subCategoFiltro", gestorParticipante.filtrarSubCategorias(idCategoria));
+	}
+	
 	private void setNullParametrosViejos(HttpServletRequest request) {
 		HttpSession sesion = request.getSession();
 		
@@ -163,5 +205,52 @@ public class ServletParticipante extends HttpServlet {
 		ArrayList<Puja> pujasObtenidas = gestorParticipante.getPujas(idSubasta); 
 		
 		laSesion.setAttribute("pujasObtenidas", pujasObtenidas);
+	}
+
+	private void obtenerMultiplesArreglos(HttpServletRequest request,String modalidadComentario,String usuarioSeleccionado) {
+		HttpSession sesionActual = request.getSession();
+		GestorBD gestorParticipante = (GestorBD) sesionActual.getAttribute("gestorParticipante");
+		
+		switch(modalidadComentario) {
+		
+			case "Vendedor":
+		
+				ArrayList<ConsultasHistorial> consultasObtenidasSubastas = gestorParticipante.obtenerHistorialSubastas(usuarioSeleccionado);
+				ArrayList<Comentario> comentariosObtenidosVendedor = gestorParticipante.obtenerComentariosSobreUsuario(usuarioSeleccionado, "Vendedor");
+				
+				sesionActual.setAttribute("historialSubastas", consultasObtenidasSubastas);
+				sesionActual.setAttribute("historialPujas", null);
+				sesionActual.setAttribute("comentariosObtenidos", comentariosObtenidosVendedor);
+				break;
+		
+			case "Comprador":
+				ArrayList<ConsultasHistorial> consultasObtenidasPujas = gestorParticipante.obtenerHistorialPujas(usuarioSeleccionado);
+				ArrayList<Comentario> comentariosObtenidosComprador = gestorParticipante.obtenerComentariosSobreUsuario(usuarioSeleccionado, "Comprador");
+				
+				sesionActual.setAttribute("historialPujas", consultasObtenidasPujas);
+				sesionActual.setAttribute("historialSubastas", null);
+				sesionActual.setAttribute("comentariosObtenidos", comentariosObtenidosComprador);
+				break;
+		}
+	}
+
+	private void obtenerSubastasFiltradas(HttpServletRequest request) {
+		HttpSession sesionActual = request.getSession();
+		GestorBD gestorParticipante = (GestorBD) sesionActual.getAttribute("gestorParticipante");
+		String aliasParticipante = (String) sesionActual.getAttribute("aliasParticipante");
+		String idSubCategoria = request.getParameter("subCategoriaFiltro").substring(0, request.getParameter("subCategoriaFiltro").indexOf("-"));
+		
+		ArrayList<Subasta> subastasFiltradas = gestorParticipante.getSubastasPorCategoria(new java.sql.Date(gestorParticipante.obtenerFecha().getTime()), aliasParticipante, Integer.parseInt(idSubCategoria),1);
+		sesionActual.setAttribute("subastasValidas", subastasFiltradas);
+	}
+
+	private void obtenerSubastasValidas(HttpServletRequest request) {
+		HttpSession sesionActual = request.getSession();
+		GestorBD gestorParticipante = (GestorBD) sesionActual.getAttribute("gestorParticipante");
+		String aliasParticipante = (String) sesionActual.getAttribute("aliasParticipante");
+		
+		ArrayList<Subasta> subastasValidasTotales = gestorParticipante.getSubastas(new java.sql.Date(gestorParticipante.obtenerFecha().getTime()), aliasParticipante);
+		sesionActual.setAttribute("subastasValidas", subastasValidasTotales);
+		
 	}
 }

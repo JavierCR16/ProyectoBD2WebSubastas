@@ -1,9 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
     
 <%@ page import= "Gestores.GestorBD" %>    
 <%@ page import= "java.util.*" %> 
 <%@ page import = "Modelo.*" %>
+<%@ page import = "java.sql.Date" %>
 <!DOCTYPE html>
 <html>
 
@@ -29,13 +30,26 @@
 	
 	HttpSession laSesion = request.getSession();
 	GestorBD gestorParticipante = (GestorBD)laSesion.getAttribute("gestorParticipante");
+	String aliasParticipante = (String) laSesion.getAttribute("aliasParticipante");
 	ArrayList<String> categorias = gestorParticipante.getCategorias();
 	ArrayList<String> subCategorias = (ArrayList<String>) laSesion.getAttribute("subCatego");
+	ArrayList<String> subCategoriasFiltro = (ArrayList<String>) laSesion.getAttribute("subCategoFiltro");
+	
+	ArrayList<Subasta> subastasValidas = (ArrayList<Subasta>)laSesion.getAttribute("subastasValidas");
 	ArrayList<Subasta> subastasTotales = gestorParticipante.getSubastasSinRestriccion();
 	ArrayList<Puja> pujasObtenidas = (ArrayList<Puja>)laSesion.getAttribute("pujasObtenidas");
+	ArrayList<String> usuarios = gestorParticipante.devolverUsuarios("NA", 0);
+	ArrayList<ConsultasHistorial> historialSubastas = (ArrayList<ConsultasHistorial>) laSesion.getAttribute("historialSubastas");
+	ArrayList<ConsultasHistorial> historialPujas = (ArrayList<ConsultasHistorial>) laSesion.getAttribute("historialPujas");
+	ArrayList<Comentario> comentariosObtenidos = (ArrayList<Comentario>) laSesion.getAttribute("comentariosObtenidos");
 	
 	pujasObtenidas = (pujasObtenidas == null ? new ArrayList<>() : pujasObtenidas);
 	subCategorias = (subCategorias == null ? new ArrayList<>() : subCategorias);
+	subCategoriasFiltro = (subCategoriasFiltro == null ? new ArrayList<>() : subCategoriasFiltro);
+	historialSubastas =  (historialSubastas == null ? new ArrayList<>() : historialSubastas);
+	historialPujas =  (historialPujas == null ? new ArrayList<>() : historialPujas);
+	comentariosObtenidos =  (comentariosObtenidos == null ? new ArrayList<>() : comentariosObtenidos);
+	subastasValidas = (subastasValidas == null ? new ArrayList<>() : subastasValidas);
 	
 	//Aqui los datos de una subasta
 		String tiempoInicioSubasta = (String)laSesion.getAttribute("tiempoInicioSubasta");
@@ -93,7 +107,7 @@
           <form action="ServletParticipante" method = POST>
           <div class="tab-content mt-2">
             <div class="tab-pane fade show active" id="tabone" role="tabpanel">
-              <h1 class="text-center">Subastar un ͍tem</h1>
+              <h1 class="text-center">Subastar un Ítem</h1>
               <form class="form-control">
                 <div class="custom-control-inline">
                   <div class="input-group"> <label style = "margin-top: 10px">Inicio de Subasta:</label>
@@ -139,15 +153,15 @@
                             
                             <tr>
                                 <td>Precio Base </td>
-                                <td>Categor�a</td>
+                                <td>Categoría</td>
                             </tr>
                                 
                             <tr>
 
                                 <td> <input name="precio" type = "text" style = "border-radius: 10px" value = "<%=precioBase%>" >  </td>
-                                <td> <select name= "comboCategorias" onchange ="this.form.submit()"> 
+                                <td> <select class="m-2" name= "comboCategorias" onchange ="this.form.submit()"> 
                                 
-                                <option value = "Categoria">Categor�a</option>>
+                                <option value = "Categoria">Categoría</option>
                                 	<% for(int i =0;i<categorias.size(); i++){  %>
                                         	<option value="<%=categorias.get(i) %>"><%=categorias.get(i)%></option>
                                         	
@@ -158,12 +172,12 @@
                             
                             <tr>
                                 <td></td>
-                                <td>SubCategor�a</td>
+                                <td>SubCategoría</td>
                             </tr>
                             
                             <tr> 
                                 <td></td>
-                                <td><select name="subcategoria"> 
+                                <td><select class="m-2" name="subcategoria"> 
                                         <% for(int i =0;i<subCategorias.size(); i++){  %>
                                         	<option value="<%=subCategorias.get(i) %>"><%=subCategorias.get(i)%></option>
                                         	
@@ -191,10 +205,99 @@
             </div>
            
             <div class="tab-pane fade" id="tabtwo" role="tabpanel">
-              <p class="">Contenido de Comprador</p>
-              
-              
-              
+               <div class="row">
+                              <div class="col-md-12"> 
+                                <table class="table">
+                                  <thead>
+                                    <tr>
+                                      <th>ID</th>
+                                      <th>Vendedor</th>
+                                      <th>Precio Base</th>
+                                      <th>SubCategoría</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                  
+                                  <%for(int i = 0; i< subastasValidas.size();i++){  %>
+                                    <tr>
+                                      <td> <%=subastasValidas.get(i).getId() %></td>
+                                      <td><%=subastasValidas.get(i).getVendedor() %></td>
+                                      <td><%=subastasValidas.get(i).getPrecioBase() %></td>
+                                      <td><%=subastasValidas.get(i).getSubCategoria() %></td>
+                                    </tr>
+                                    <%} %>
+                                    
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-12 d-flex justify-content-end">
+                                <button class="btn btn-primary m-2" name="botonSinFiltroComprador" type="submit"> Sin Filtro </button>
+                                <button class="btn btn-primary m-2" name="botonMostrarDetallesComprador" type="submit"> Mostrar Detalles </button>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-6">
+                                <div class="row"> </div>
+                                <div class="row">
+                                  <div class="col-md-12">
+                                    <p class="lead m-2"><b>Nueva Oferta</b></p>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-md-12"> </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-md-12 d-flex">
+                                    <h3 class="m-2">₡</h3>
+                                    <input name="precio" type="text" style="border-radius: 10px" value="<%=precioBase%>" class="m-2"> </div>
+                                </div>
+                                
+                                <div class="row">
+                                  <div class="col-md-12 d-flex">
+                                    <h3 class="m-2">ID:</h3>
+                                    <input name="precio" type="text" style="border-radius: 10px" value="<%=precioBase%>" class="m-2"> </div>
+                                </div>
+                                
+                                <div class="row d-flex justify-content-start">
+                                  <button class="btn btn-primary m-3" name="botonPujar" type="submit"> Crear Puja </button>
+                                </div>
+                                <div class="row"> </div>
+                              </div>
+                              <div class="col-md-6">
+                                <div class="row">
+                                  <div class="col-md-12 d-flex justify-content-start">
+                                    <p class="lead"><b>Filtros</b></p>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-md-12 d-flex justify-content-start">
+                                    <p class="m-2">Categoria:</p> 
+                                    <select name= "comboCategoriasFiltro" onchange ="this.form.submit()" class="m-2" >
+                                      	 <option value = "Categoria">Categoría</option>
+                                	<% for(int i =0;i<categorias.size(); i++){  %>
+                                        	<option value="<%=categorias.get(i) %>"><%=categorias.get(i)%></option>
+                                        	
+                                        	<%} %>
+                                        
+                                    </select> </div>
+                                </div>
+                                <div class="row d-flex justify-content-start">
+                                  <p class="m-2">Subcategoria:</p> 
+                                  <select name = "subCategoriaFiltro" class="m-2">
+                                  
+                                       <% for(int i =0;i<subCategoriasFiltro.size(); i++){  %>
+                                        	<option value="<%=subCategoriasFiltro.get(i) %>"><%=subCategoriasFiltro.get(i)%></option>
+                                        	
+                                        	<%} %>
+                                        	
+                                    </select> </div>
+                                <div class="row">
+                                  <button class="btn btn-primary m-2" name="botonFiltrarComprador" type="submit"> Filtrar </button>
+                                </div>
+                              </div>
+                            </div>
             </div>
             
             <div class="tab-pane fade" id="tabthree" role="tabpanel">
@@ -208,7 +311,7 @@
                 <th>ID</th>
                 <th>Vendedor</th>
                 <th>Precio Base</th>
-                <th>SubCategor�a</th>
+                <th>SubCategoría</th>
               </tr>
             </thead>
             <tbody>
@@ -228,7 +331,10 @@
 
 			<button name="botonActualizarSubastas"  class="btn btn-primary" > Actualizar Subastas </button> 
 			
-			<label>Pujas</label>
+			<br>
+            <br>
+            <br>
+            <label>Pujas</label>
 			
 			<table class="table"> 
 				<thead>
@@ -256,14 +362,128 @@
 			</table>
 			
 			<label>Id Subasta</label>
-			<input type = text name = "idSubasta" class="form-control">
+			<input type = text name = "idSubasta">
+			
+			<br>
+			<br>
 			
 			<button name="botonHistorialPujas"  class="btn btn-primary" >Mostrar Historial</button> 
 			
             </div>
             
             <div class="tab-pane fade" role="tabpanel" id="tabfour">
-              <p class="">Contenido de Usuarios</p>
+            
+            	 <div class="row">
+                              <div class="col-md-12">
+                                <h3 class="text-center" contenteditable="true">Historial de Usuarios</h3>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-6 d-flex justify-content-start"> <label style="margin-left: 15px">Usuario:</label> 
+                              <select name = "usuariosConsulta" style="margin-left: 15px">  
+                              
+                              		<%
+                              			for(int i =0; i<usuarios.size();i++){
+                              		%>
+                              		
+                              		<option value="<%=usuarios.get(i) %>"><%=usuarios.get(i)%></option>
+                              		
+                              		<%} %>
+                              		
+                              
+                                    
+                                </select> </div>
+                              <div class="col-md-6">
+                                <div class="row">
+                                  <div class="col-md-12 align-items-center d-flex justify-content-end flex-row">
+                                  
+                                    <input name="radioBoton" type="radio" value="1" checked> Ventas
+                                    <input name="radioBoton" type="radio" value="2" style="margin-left: 10px"> Pujas (Ganadoras) 
+                                    
+                                   </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-12">
+                                <table class="table">
+                                  <thead>
+                                    <tr>
+                                      <th>Ítem</th>
+                                      <th>Precio Base</th>
+                                      <th>Precio Final</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                  
+                                  
+                                  <%
+                                 
+
+                                  for(int i = 0; i<historialSubastas.size(); i++){ %>
+                                  
+                                    <tr>
+                                      <td> <%=historialSubastas.get(i).getDescripcionItem()  %> </td>
+                                      <td><%=historialSubastas.get(i).getPrecioBase() %> </td>
+                                      <td><%=historialSubastas.get(i).getPrecioFinal() %> </td>
+                                    </tr>
+                                    
+                                  <%} 
+                                  for(int j=0; j<historialPujas.size();j++){
+                                  %>  
+                                  	<tr>
+                                      <td> <%=historialPujas.get(j).getDescripcionItem()  %> </td>
+                                      <td><%=historialPujas.get(j).getPrecioBase() %> </td>
+                                      <td><%=historialPujas.get(j).getPrecioFinal() %> </td>
+                                    </tr>
+                                  <%} %>
+                                  
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-12"> </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-12">
+                                <p class="lead">Comentarios</p>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-md-12">
+                                <table class="table">
+                                  <thead>
+                                    <tr>
+                                      <th>Autor</th>
+                                      <th>Ítem</th>
+                                      <th>Comentario</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                  
+                                  <%for(int i =0; i<comentariosObtenidos.size();i++){ %>
+                                    <tr>
+                                      <td> <%=comentariosObtenidos.get(i).getAutor() %></td>
+                                      <td><%=comentariosObtenidos.get(i).getItem() %></td>
+                                      <td><%=comentariosObtenidos.get(i).getComentario()%></td>
+                                    </tr>
+                                    
+                                    <%} %>
+                                    
+                                    
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                            
+                            <div class="row">
+                            <div class="col-md-12">
+                              <button type = "submit" name="botonActualizarUsuarios" class="btn btn-primary">Actualizar</button>
+                              <button type = "submit" name="botonHistorialUsuarios" class="btn btn-primary">Mostrar Historial</button>
+                            </div>
+                          </div>
+
             </div>
             
           </div>
