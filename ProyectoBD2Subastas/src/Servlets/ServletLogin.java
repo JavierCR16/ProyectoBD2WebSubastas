@@ -60,6 +60,9 @@ public class ServletLogin extends HttpServlet {
         	gestorBase.establecerConexionUsuario(aliasUsuario, contraUsuario);
         	sesionActual.setAttribute("gestorParticipante", gestorBase);
         	sesionActual.setAttribute("aliasParticipante", aliasUsuario);
+        	
+        	setNullParametrosViejos(sesionActual);
+        	
         	response.sendRedirect("participante.jsp");
         }
         else {
@@ -75,6 +78,17 @@ public class ServletLogin extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
+	}
+	
+	private void setNullParametrosViejos(HttpSession sesion) {
+		sesion.setAttribute("tiempoInicioSubasta",null);
+		sesion.setAttribute("fechaInicioSubasta",null);
+		sesion.setAttribute("tiempoFinSubasta",null);
+		sesion.setAttribute("fechaFinSubasta",null);
+		sesion.setAttribute("descripcion",null);
+		sesion.setAttribute("detalles", null);
+		sesion.setAttribute("precioBase",null);
+		sesion.setAttribute("subCatego",null);
 	}
 
 }
