@@ -99,7 +99,7 @@
             </div>
           </div>
           <div class="row d-flex justify-content-end">
-            <button class="btn btn-primary" name="botonSubasta" type="submit"> Cerrar</button>
+            <a href="participante.jsp" class="btn btn-primary" name="botonCerrar"> Cerrar</a>
           </div>
         </div>
       </div>

@@ -362,12 +362,13 @@
 			</table>
 			
 			<label>Id Subasta</label>
-			<input type = text name = "idSubasta">
+			<input type = text name = "idSubastaConsultas">
 			
 			<br>
 			<br>
 			
 			<button name="botonHistorialPujas"  class="btn btn-primary" >Mostrar Historial</button> 
+			<button name="botonVerDetallesConsultas" class="btn btn-primary">Ver Detalles</button>
 			
             </div>
             

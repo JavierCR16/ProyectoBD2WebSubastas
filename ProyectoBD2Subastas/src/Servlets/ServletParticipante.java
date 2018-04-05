@@ -71,7 +71,9 @@ public class ServletParticipante extends HttpServlet {
 			entroAOtro = true;
 			otraVentana = true;
 			
-			pasarInfoItem(request);
+			String idSubasta = request.getParameter("idSubastaComprador");
+			
+			pasarInfoItem(request, idSubasta);
 			response.sendRedirect("DetallesItem.jsp");
 			
 		}
@@ -98,6 +100,16 @@ public class ServletParticipante extends HttpServlet {
 			obtenerSubastasFiltradas(request);
 		}
 		
+		if(request.getParameter("botonVerDetallesConsultas") != null) {
+			entroAOtro = true;
+			otraVentana = true;
+			
+			String idSubasta = request.getParameter("idSubastaConsultas");
+			
+			pasarInfoItem(request, idSubasta);
+			response.sendRedirect("DetallesItem.jsp");
+		}
+		
 		if(!entroAOtro && request.getParameter("comboCategorias") != null) {
 			if(!request.getParameter("comboCategorias").equals("Categoria")) { // Significa que el que se toco fue el de los filtros
 				enviarParametrosASesion(request); //Esto para que cuando agarre las subcategorias se queden los campos que tenian algo escrito
@@ -109,6 +121,7 @@ public class ServletParticipante extends HttpServlet {
 			}
 	
 		}
+		
 		
 			if(!otraVentana)
 				response.sendRedirect("participante.jsp");
@@ -216,7 +229,7 @@ public class ServletParticipante extends HttpServlet {
 		HttpSession laSesion = request.getSession();
 		GestorBD gestorParticipante = (GestorBD) laSesion.getAttribute("gestorParticipante");
 		
-		int idSubasta = Integer.parseInt(request.getParameter("idSubasta"));
+		int idSubasta = Integer.parseInt(request.getParameter("idSubastaConsultas"));
 		ArrayList<Puja> pujasObtenidas = gestorParticipante.getPujas(idSubasta); 
 		
 		laSesion.setAttribute("pujasObtenidas", pujasObtenidas);
@@ -288,11 +301,11 @@ public class ServletParticipante extends HttpServlet {
 		}
 	}
 	
-	private void pasarInfoItem(HttpServletRequest request) {
+	private void pasarInfoItem(HttpServletRequest request, String idSubasta) {
 		HttpSession sesionActual = request.getSession();
 		GestorBD gestorParticipante = (GestorBD) sesionActual.getAttribute("gestorParticipante");
 		
-		String idSubasta = request.getParameter("idSubastaComprador");
+		//String idSubasta = request.getParameter("idSubastaComprador");
 		Item informacionItem = gestorParticipante.extraerInformacionItem(idSubasta);
 		
 		sesionActual.setAttribute("item", informacionItem);
